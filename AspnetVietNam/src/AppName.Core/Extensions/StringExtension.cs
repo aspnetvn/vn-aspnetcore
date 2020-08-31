@@ -35,15 +35,17 @@ namespace AppName.Core.Extensions.StringExtension
 
         public static string GenerateSlug(this string phrase, int maxLength = 45)
         {
-            string str = phrase.RemoveAccent().ToLower();
+            // First to lower case
+            phrase = phrase.RemoveAccent().ToLower();
             // invalid chars           
-            str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
+            phrase = Regex.Replace(phrase, @"[^a-z0-9\s-]", "");
             // convert multiple spaces into one space   
-            str = Regex.Replace(str, @"\s+", " ").Trim();
+            phrase = Regex.Replace(phrase, @"\s+", " ").Trim();
             // cut and trim 
-            str = str.Substring(0, str.Length <= maxLength ? str.Length : maxLength).Trim();
-            str = Regex.Replace(str, @"\s", "-"); // hyphens   
-            return str;
+            phrase = phrase.Substring(0, phrase.Length <= maxLength ? phrase.Length : maxLength).Trim();
+            // replace occurences of -
+            phrase = Regex.Replace(phrase, @"\s", "-"); // hyphens   
+            return phrase;
         }
 
         public static string RemoveAccent(this string txt)
@@ -52,7 +54,7 @@ namespace AppName.Core.Extensions.StringExtension
             return System.Text.Encoding.ASCII.GetString(bytes);
         }
 
-        public static string ToUrlSlug(string value)
+        public static string ToUrlSlug(this string value)
         {
             //First to lower case
             value = value.ToLowerInvariant();
